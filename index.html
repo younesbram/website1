@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.7, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes">
+    <title>younes</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤩</text></svg>">
+    <meta name="description" content="younes, security software engineer, enjoyer of computers and science">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom, #f0f4f8, #e0e7eb 50%, #d0dbe0 100%);
+            color: #333;
+            height: 100%;
+            overflow: hidden;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s ease;
+        }
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        h1:hover {
+            color: #3498db;
+        }
+        p {
+            font-size: 1.1em;
+            color: #34495e;
+            line-height: 1.6;
+        }
+        .highlight {
+            color: #2980b9;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .highlight:hover {
+            color: #3498db;
+        }
+        #links {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+        }
+        #links a {
+            font-size: 1.5em;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+        }
+        #links a:hover {
+            transform: scale(1.2);
+            text-decoration: none;
+        }
+        #terminal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: #ecf0f1;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        @media (max-width: 768px) {
+            #terminal {
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            #terminal {
+                padding: 5px;
+                font-size: 12px;
+            }
+        }
+        #terminal.active {
+            opacity: 1;
+        }
+        #terminal-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        @media (max-width: 768px) {
+            #terminal-content {
+                max-width: 100%;
+                margin: 0;
+            }
+        }
+        #terminal-output {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        #input-line {
+            display: flex;
+            align-items: center;
+        }
+        #prompt {
+            margin-right: 5px;
+        }
+        #terminal-input {
+            flex-grow: 1;
+            background-color: transparent;
+            border: none;
+            color: #ecf0f1;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            outline: none;
+            caret-color: #ecf0f1;
+        }
+        
+        @media (max-width: 768px) {
+            #terminal-input {
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            #terminal-input {
+                font-size: 12px;
+            }
+        }
+        .misc-item {
+            margin-bottom: 10px;
+            color: #ecf0f1;
+        }
+        .misc-item a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        .misc-content-frame {
+            display: none;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            width: 560px;
+            height: 315px;
+            background-color: #2c3e50;
+            border: 1px solid #34495e;
+            padding: 5px;
+            box-sizing: border-box;
+            z-index: 10;
+            cursor: move;
+        }
+        .misc-content-frame iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .misc-content-frame-header {
+            background-color: #34495e;
+            color: #ecf0f1;
+            padding: 5px;
+            font-size: 14px;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            cursor: grab;
+        }
+        .misc-content-frame-header button {
+            background: none;
+            border: none;
+            color: #ecf0f1;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        #nvim-interface {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1a1a1a;
+            color: #cccccc;
+            font-family: 'Courier New', monospace;
+            z-index: 1000;
+        }
+        
+        .nvim-container {
+            display: flex;
+            height: calc(100vh - 50px);
+            overflow: hidden;
+        }
+        
+        @media (max-width: 768px) {
+            .nvim-container {
+                height: calc(100vh - 60px);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nvim-container {
+                height: calc(100vh - 80px);
+            }
+        }
+        
+        .nvim-sidebar {
+            width: 250px;
+            background-color: #2d2d2d;
+            border-right: 1px solid #444;
+            padding: 10px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: #444 #2d2d2d;
+        }
+        
+        .nvim-sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .nvim-sidebar::-webkit-scrollbar-track {
+            background: #2d2d2d;
+        }
+        
+        .nvim-sidebar::-webkit-scrollbar-thumb {
+            background-color: #444;
+            border-radius: 4px;
+        }
+        
+        @media (max-width: 768px) {
+            .nvim-sidebar {
+                width: 40vw;
+                min-width: 160px;
+                max-width: 200px;
+                padding: 8px;
+                overflow-y: scroll;
+                max-height: 100vh;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nvim-sidebar {
+                width: 35vw;
+                min-width: 140px;
+                max-width: 160px;
+                padding: 6px;
+                overflow-y: scroll;
+                max-height: 100vh;
+            }
+        }
+        
+        .nvim-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            position: relative;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .nvim-content iframe {
+            width: 100%;
+            height: 80vh;
+            border: none;
+            background-color: #ffffff;
+            position: sticky;
+            top: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .nvim-content {
+                padding: 8px;
+                overflow-y: scroll;
+                height: calc(100vh - 60px);
+            }
+            
+            .nvim-content iframe {
+                height: calc(100vh - 120px);
+                min-height: 400px;
+                max-width: 100%;
+                object-fit: contain;
+                position: sticky;
+                top: 0;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nvim-content {
+                padding: 4px;
+                overflow-y: scroll;
+                height: calc(100vh - 80px);
+            }
+            
+            .nvim-content iframe {
+                height: calc(100vh - 140px);
+                min-height: 300px;
+                max-width: 100%;
+                object-fit: contain;
+                position: sticky;
+                top: 0;
+            }
+        }
+        
+        .nvim-file-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-bottom: 3px;
+            transition: background-color 0.2s;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            user-select: none;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        @media (max-width: 768px) {
+            .nvim-file-item {
+                padding: 12px 8px;
+                font-size: 0.95em;
+                min-height: 48px;
+                display: flex;
+                align-items: center;
+                margin-bottom: 4px;
+                border-radius: 6px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nvim-file-item {
+                padding: 14px 6px;
+                font-size: 0.9em;
+                min-height: 52px;
+                margin-bottom: 4px;
+                border-radius: 6px;
+            }
+        }
+        
+        .nvim-file-item:hover {
+            background-color: #3a3a3a;
+        }
+        
+        .nvim-file-item.selected {
+            background-color: #4a4a4a;
+            color: #ffffff;
+        }
+        
+        .nvim-file-item.directory {
+            color: #569cd6;
+        }
+        
+        .nvim-file-item.file {
+            color: #cccccc;
+        }
+        
+        .nvim-header {
+            background-color: #2d2d2d;
+            padding: 10px;
+            border-bottom: 1px solid #444;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nvim-title {
+            font-weight: bold;
+            color: #ffffff;
+        }
+        
+        .nvim-close {
+            background: none;
+            border: none;
+            color: #ff6b6b;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 8px;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        
+        .nvim-close:hover {
+            background-color: rgba(255, 107, 107, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .nvim-close {
+                font-size: 20px;
+                padding: 12px;
+                min-height: 48px;
+                min-width: 48px;
+                border-radius: 6px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nvim-close {
+                font-size: 22px;
+                padding: 14px;
+                min-height: 52px;
+                min-width: 52px;
+                border-radius: 6px;
+            }
+        }
+        
+        .nvim-status {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #2d2d2d;
+            padding: 8px 12px;
+            border-top: 1px solid #444;
+            font-size: 14px;
+            color: #888;
+            z-index: 1001;
+        }
+        
+        @media (max-width: 768px) {
+            .nvim-status {
+                font-size: 13px;
+                padding: 10px 12px;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nvim-status {
+                font-size: 12px;
+                padding: 12px 8px;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                line-height: 1.4;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="name">younes brahimi</h1>
+        <p>security software engineer</p>
+        <p id="about">Greetings! I am a security software engineer.  Email me if you want to contact me :).</p>
+        <div id="links">
+            <a href="https://github.com/younesbram" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+            <a href="mailto:younes@younes.ca"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 3v18h24v-18h-24zm21.518 2l-9.518 7.713-9.518-7.713h19.036zm-19.518 14v-11.817l10 8.104 10-8.104v11.817h-20z"/></svg></a>
+            <a href="https://www.linkedin.com/in/younesbrahimi" target="_blank"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMTkgMGgtMTRjLTIuNzYxIDAtNSAyLjIzOS01IDV2MTRjMCAyLjc2MSAyLjIzOSA1IDUgNWgxNGMyLjc2MiAwIDUtMi4yMzkgNS01di0xNGMwLTIuNzYxLTIuMjM4LTUtNS01em0tMTEgMTloLTN2LTExaDN2MTF6bS0xLjUtMTIuMjY4Yy0uOTY2IDAtMS43NS0uNzktMS43NS0xLjc2NHMuNzg0LTEuNzY0IDEuNzUtMS43NjQgMS43NS43OSAxLjc1IDEuNzY0LS43ODMgMS43NjQtMS43NSAxLjc2NHptMTMuNSAxMi4yNjhoLTN2LTUuNjA0YzAtMy4zNjgtNC0zLjExMy00IDB2NS42MDRoLTN2LTExaDN2MS43NjVjMS4zOTYtMi41ODYgNy0yLjc3NyA3IDIuNDc2djYuNzU5eiIvPjwvc3ZnPg=="></a>
+        </div>
+    </div>
+    <div id="terminal">
+        <div id="terminal-content">
+            <div id="terminal-output"></div>
+            <div id="input-line">
+                <span id="prompt">$ </span>
+                <input type="text" id="terminal-input" autofocus>
+            </div>
+        </div>
+    </div>
+    <div id="misc-content"></div>
+    <div class="misc-content-frame" id="misc-frame">
+        <div class="misc-content-frame-header" id="misc-frame-header">
+            <span id="misc-filename"></span>
+            <span>
+                <button id="maximize-btn">⌞⌝</button>
+                <button id="open-tab-btn">👉</button>
+                <button id="close-btn">❌</button>
+            </span>
+        </div>
+        <iframe id="misc-frame-iframe"></iframe>
+    </div>
+    
+    <div id="nvim-interface">
+        <div class="nvim-header">
+            <div class="nvim-title">nvim - /misc</div>
+            <button class="nvim-close" onclick="closeNvim()">✕</button>
+        </div>
+        <div class="nvim-container">
+            <div class="nvim-sidebar" id="nvim-sidebar">
+                <div style="margin-bottom: 10px; color: #888; font-size: 12px;">/misc</div>
+                <div id="nvim-file-list"></div>
+            </div>
+            <div class="nvim-content" id="nvim-content">
+                <div style="color: #888; text-align: center; margin-top: 100px;">
+                    <h3>Welcome to nvim</h3>
+                    <p>Use hjkl or arrow keys to navigate files</p>
+                    <p>Use left/right to open/close files</p>
+                    <p>Click on files to open them</p>
+                </div>
+            </div>
+        </div>
+        <div class="nvim-status" id="nvim-status">
+            Use hjkl or arrow keys to navigate • left/right to open/close • ESC to close nvim
+        </div>
+    </div>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        let nameClickCount = 0;
+        let currentDirectory = '/';
+        let commandHistory = [];
+        let historyIndex = -1;
+        let nvimSelectedIndex = 0;
+        let nvimFiles = [];
+        let nvimOpen = false;
+        let flappyHighScore = 0;
+        const fileSystem = {
+            '/': ['usr', 'etc', 'misc', 'art.exe'],
+            '/usr': ['leaks.exe', 'whereami', 'haveibeenpwned.exe'],
+            '/etc': ['shadow'],
+            '/etc/shadow': ['passwd.test'],
+            '/misc': ['yup.mp4', 'cheap_offsec_team.html', 'security_books.html', 'diet_motivation--.mp4', 'diet_motivation++.mp4', 'the_professor_and1.mp4', 'legend_from_madeira.mp4']
+        };
+
+        const miscLinks = {
+            'yup.mp4': 'https://www.youtube.com/embed/_m0bI82Rz_k',
+            'cheap_offsec_team.html': 'https://arxiv.org/html/2406.01637v1',
+            'security_books.html': 'https://people.scs.carleton.ca/~paulv/5900wBooks.html',
+            'diet_motivation--.mp4': 'https://www.youtube.com/embed/H3HZVrXuYzg',
+            'diet_motivation++.mp4': 'https://www.youtube.com/embed/l4OIzjpKTXI',
+            'the_professor_and1.mp4': 'https://www.youtube.com/embed/LweNdi92DW0',
+            'legend_from_madeira.mp4': 'https://www.youtube.com/embed/xqFTe96OWPU'
+        };
+
+        const asciiArts = [
+  `                                  )___(
+                           _______/__/_
+                  ___     /===========|   ___
+ ____       __   [\\\]___/____________|__[///]   __
+ \\   \\_____[\\]__/___________________________\\__[//]___
+  \\40A                                                 |
+   \\                                                  /
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`,
+
+  `       .-~~\`\`~~-,
+      (          \\
+   .--'\`-.__,     \\
+  /      |\\O/      |
+ |,      /         |
+ \\   ,--\`\\         |
+  \`.(   /          \\
+       /            \\
+      / .  ;    :.   \\
+     /__;   \\   | \\   \\
+     /   '. |\\_ /-.'-._\\
+    |      \`   \`        \\
+    |    /               \\
+    |    |                |
+    |    |                \\
+    \\    \\                 |
+     \\    |  |   |   \\     \\
+      \\   \\  \\   \\    \\     |
+       '.  \\  \\  ' \\   \\     \\
+         \\  \\  \`\\   \`\\  \`\\    \\
+          |  \`\\  \`\\   \`.  '.   \\
+           \\   \`-. '._  '-. '._/\\
+            |     \\-._;-._ '-._  \\
+            \\      \`\\     \`--\` \`--\\
+             ;_      \`-.           |
+~==~==jgs==~,-.-.-'';'=~=-.,_   __/=~=~=~~=
+  =_ = -_ -( ( ( .-\`( ( ( .-\`\`"\`-_ = - _ -
+- -   =   - \` \` \` _= \` \` \`   =  -  -    =
+~~==~=~~==~=~~=~~=~=~==~~=~~==~~=~~=~~~===~~
+                         \\ . \\  . '|\`,`,
+
+  `             ________________________________________________
+            /                                                \\
+           |    _________________________________________     |
+           |   |                                         |    |
+           |   |  C:\\Users\\Younes> ransomware.c          |    |
+           |   |  [WARNING] System encrypted with AES!   |    |
+           |   |                                         |    |
+           |   |                                         |    |
+           |   |                                         |    |
+           |   |                                         |    |
+           |   |                                         |    |
+           |   |                                         |    |
+           |   |                                         |    |
+           |   |                                         |    |
+           |   |                                         |    |
+           |   |_________________________________________|    |
+           |                                                  |
+            \\_________________________________________________/
+                   \\___________________________________/
+                ___________________________________________
+             _-'    .-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.  --- \`-_
+          _-'.-.-. .---.-.-.-.-.-.-.-.-.-.-.-.-.-.-.--.  .-.-.\`-_
+       _-'.-.-.-. .---.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-\`__\`. .-.-.-.\`-_
+    _-'.-.-.-.-. .-----.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-----. .-.-.-.-.\`-_
+ _-'.-.-.-.-.-. .---.-. .-------------------------. .-.---. .---.-.-.-.\`-_
+:-------------------------------------------------------------------------:
+\`---._.-------------------------------------------------------------._.---'`,
+
+  `                       .,,uod8B8bou,,.
+              ..,uod8BBBBBBBBBBBBBBBBRPFT?l!i:.
+         ,=m8BBBBBBBBBBBBBBBRPFT?!||||||||||||||
+         !...:!TVBBBRPFT||||||||||!!^^""'   ||||
+         !.......:!?|||||!!^^""'            ||||
+         !.........||||                     ||||
+         !.........||||                     ||||
+         !.........||||                     ||||
+         !.........||||                     ||||
+         !.........||||                     ||||
+         !.........||||                     ||||
+         \`.........||||                    ,||||
+          .;.......||||               _.-!!|||||
+   .,uodWBBBBb.....||||       _.-!!|||||||||!:'
+!YBBBBBBBBBBBBBBb..!|||:..-!!|||||||!iof68BBBBBb....
+!..YBBBBBBBBBBBBBBb!!||||||||!iof68BBBBBBRPFT?!::   \`.
+!....YBBBBBBBBBBBBBBbaaitf68BBBBBBRPFT?!:::::::::     \`.
+!......YBBBBBBBBBBBBBBBBBBBRPFT?!::::::;:!^"\`::::       \`.
+!........YBBBBBBBBBBRPFT?!::::::::::^''...::::::;         iBBbo.
+\`..........YBRPFT?!::::::::::::::::::::::::;iof68bo.      WBBBBbo.
+  \`..........:::::::::::::::::::::::;iof688888888888b.     \`YBBBPV'
+    \`........::::::::::::::::;iof688888888888888888888b.     \`
+      \`......:::::::::;iof688888888888888888888888888888b.
+        \`....:::;iof688888888888888888888888888888888899fT!
+          \`..::!8888888888888888888888888888888899fT|!^"'
+            \`' !!988888888888888888888888899fT|!^"'
+                \`!!8888888888888888899fT|!^"'
+                  \`!988888888899fT|!^"'
+                    \`!9899fT|!^"'
+                      \`!^"'`,
+
+  `      _=====_                               _=====_
+     / _____ \\                             / _____ \\
+   +.-'_____'-.---------------------------.-'_____'-.+
+  /   |     |  '.        S O N Y        .'  |  _  |   \\
+ / ___| /|\\ |___ \\                     / ___| /_\\ |___ \\
+/ |      |      | ;  __           _   ; | _         _ | ;
+| | <---   ---> | | |__|         |_:> | ||_|       (_)| |
+| |___   |   ___| ;SELECT       START ; |___       ___| ;
+|\\    | \\|/ |    /  _     ___      _   \\    | (X) |    /|
+| \\   |_____|  .','" "', |___|  ,'" "', '.  |_____|  .' |
+|  '-.______.-' /       \\ANALOG/       \\  '-._____.-'   |
+|               |       |------|       |                |
+|              /\\       /      \\       /\\               |
+|             /  '.___.'        '.___.'  \\              |
+ \\          /                              \\           /
+  \\________/                                \\_________/`,
+
+  `         _nnnn_                      
+        dGGGGMMb     ,"""""""""""""".
+       @p~qp~~qMb    | Linux Rules! |
+       M|@||@) M|   _;..............'
+       @,----.JM| -'
+      JS^\\__/  qKL
+     dZP        qKRb
+    dZP          qKKb
+   fZP            SMMb
+   HZM            MMMM
+   FqM            MMMM
+ __| ".        |\\dS"qML
+ |    \`.       | \`' \\Zq
+_)      \\.___.,|     .'
+\\____   )MMMMMM|   .'
+     \`-'       \`--'    `,
+
+  `                 ."-,.__
+                 \`.     \`.  ,
+              .--'  .._,'"-' \`.
+             .    .'         \`'
+             \`.   /          ,'
+               \`  '--.   ,-"'
+                \`"\`   |  \\
+                   -. \\ | |
+                    \`--Y.'      ___.
+                         \\     L._, \\
+               _.,        \`.   <  <\\                _
+             ,' '           \`, \`.   | \\            ( \`
+          ../, \`.            \`  |    .\\\`.           \\ \\_
+         ,' ,..  .           _.,'    ||\\l            )  '".
+        , ,'   \\           ,'.-.'-._,'  |           .  _._\`.
+      ,' /      \\ \\        \`' ' \`--/   | \\          / /   ..\\
+    .'  /        \\ .         |\\__ - _ ,'\\ \`        / /     \`.\`.
+    |  '          ..         \`-...-"  |  \`-'      / /        . \`.
+    | /           |L__           |    |          / /          \`. \`.
+   , /            .   .          |    |         / /             \` \`
+  / /          ,. ,\`._ \`-_       |    |  _   ,-' /               \` \\
+ / .           \\"\`_/. \`-_ \\_,.  ,'    +-' \`-'  _,        ..,-.    \\\`.
+.  '         .-f    ,'   \`    '.       \\__.---'     _   .'   '     \\ \\
+' /          \`.'    l     .' /          \\..      ,_|/   \`.  ,'      L\`
+|'      _.-""\` \`.    \\ _,'  \`            \\ \`.___\`.'"\`-.  , |   |    | \\
+||    ,'      \`. \`.   '       _,...._        \`  |    \`/ '  |   '     .|
+||  ,'          \`. ;.,.---' ,'       \`.   \`.. \`-'  .-' /_ .'    ;_   ||
+|| '              V      / /           \`   | \`   ,'   ,' '.    !  \`. ||
+||/            _,-------7 '              . |  \`-'    l         /    \`||
+. |          ,' .-   ,' ||               | .-.        \`.      .'     ||`,
+
+  `          .s$P*.s$$$s.\`*T$$b T TP$P.d$P .sd$s.                
+        .s$P .s$$$$$$$b. T$$b  T:P d$$P.d$$$$$$bs.             
+       d$$P d$$$$P'\`T$$$b $$$;:$bd$$$$$$b\`T$$*$$$b.           
+      d$$P d$$$P' .+. *$$:$$$;.$$$P^*""*^b.$$b T$$$b          
+     d$P .d$$$b.s$$$$$b TP^TP dP',d$$$$$s.\`T$$b T$$$b         
+    d$P d$$P T$$$P*"*^b.b d,P^*"*^T$$$$$$$b\`T$b$$$$$.        
+   ,$P d$P .$$$P'       \`'*\`        \`T$$$$$$$b\`T$$$$$$         
+   :$ d$P d$$$P                       \`T$$$$$$b TPT$$$b        
+  :$$d$$ d$$$P                          T$$$$$$b T.\`T$$;       
+  :$$$$$d$$$P                            T$$$$ $b T.T$$:       
+  $$$$$P$$$$                              T$$$$T$b T \`T$       
+  $P$$$;$$$;                               T$^$b Tb b :$       
+  $'\`$$ $$$;                                T.T$b TY$,:$       
+  $:$;$$$ $$$'                                $ T$; $$;'$       
+  $;$$$;$$$                                  \`b T; $$$ $       
+  $:T$$;$$$  .d$$s.                    .s$$b..$;:$;$$$.T       
+ / __\`*:$$$ *'   \`*Tb._            _.dP*'   \`*$;:$:$P__ \\      
+..' .\`.:$$$         \`*Ts'        \`sP*'        $:$$P'. \`,,     
+;  /   ,$$;   .+s**s.   \`.           .s**s+.  T$:PP'  \\  :     
+: ,   /:$$;   \\ *ss* \\    ;         / *ss* /    +: \\   . ;     
+ .\`  :  $$;,  .+s$$$s+.            .+s$$$s+.  .* ;  ;  ',      
+  \\   *.:$$,*d$P*"$$$T$b  ,+**+,  d$P*"$$$T$b*   .*    /       
+   \\    \`$$;:$; +:$$$:$$;*      *:$; +:$$$:$$;  :     /        
+         $$; T$b._$$$d$P          T$b._$$$d$P   ;              
+     \`._.:$$, \`*T$$$P*'            \`*T$$$P*'    :._.'          
+         |$$;             '                     |P$$b.         
+         ;\`$$,           :.     ,               :b.\`T$b        
+         \` T$$b._        \`*.__.*'               d$$b T$b       
+          . *TP*'           ""                 d$$$$b.:$;      
+           \\                                  dP T$$$$$$$      
+            \\          .+*"*--*"*+.          d$b. T$$^$$$      
+             \`.       :._.--..--._.;       .'$$$$; $$ $$$      
+               ;.      \`.        .'      .'  $$$$$ $P $$;      
+               : \`.      \`*----*'      .'    $$$$$ $b $P       
+               |   \`.                .'      $$$$$Y$$dP        
+        [bug]  :     \`.            .'        :T$$P$$P,db.      
+              /        \`-.      .-'          dbT d$Pd$$$$b.    
+             /            \\****'            d$$$PT$$$b T$$$b   
+           .'                              d$$$P db\`T$b T$$$b  
+        _.'                               :$$$P.d$$b:$$$\`$$$$; 
+   _.-*' \`.                               $$$$:$$$$$;$$$:$$$$$ 
+           \`-.                            :$$$;$$$$$$$$$;$$$$$ 
+              \`-.                        .-T$$$$P$$$$$P d$$$$; 
+                \`.     \`.     .*      .'   T$$$b\`T$P.sd$$$$P  
+                  \`.     \`-  '      .'      \`T$$b$$$$$$$$P'   
+                    \`.            .'          \`T.T$$$$P$$$b.  
+                      \`.        .'             :$$$$P'd$$$$$;  
+                        \`.    .'               $$$$$:d$;$$$$$.
+                          \`..'                 :$$$$;$$$b\`T$$;
+                                                T$$$:$$$$; $$$
+                                                 T$$$T$$$;d$$;
+                                                  \`T$b\`T$$$$P 
+                                                    \`*b T$P'`,
+  `     _                      _______                      _
+  _dMMMb._              .adOOOOOOOOOba.              _,dMMMb_
+ dP'  ~YMMb            dOOOOOOOOOOOOOOOb            aMMP~  \`Yb
+ V      ~"Mb          dOOOOOOOOOOOOOOOOOb          dM"~      V
+          \`Mb.       dOOOOOOOOOOOOOOOOOOOb       ,dM'
+           \`YMb._   |OOOOOOOOOOOOOOOOOOOOO|   _,dMP'
+      __     \`YMMM| OP'~"YOOOOOOOOOOOP"~\`YO |MMMP'     __
+    ,dMMMb.     ~~' OO     \`YOOOOOP'     OO \`~~     ,dMMMb.
+ _,dP~  \`YMba_      OOb      \`OOO'      dOO      _aMMP'  ~Yb._
+
+             \`YMMMM\\\`OOOo     OOO     oOOO'/MMMMP'
+     ,aa.     \`~YMMb \`OOOb._,dOOOb._,dOOO'dMMP~'       ,aa.
+   ,dMYYMba._         \`OOOOOOOOOOOOOOOOO'          _,adMYYMb.
+  ,MP'   \`YMMba._      OOOOOOOOOOOOOOOOO       _,adMMP'   \`YM.
+  MP'        ~YMMMba._ YOOOOPVVVVVYOOOOP  _,adMMMMP~       \`YM
+  YMb           ~YMMMM\\\`OOOOI\`\`\`\`\`IOOOOO'/MMMMP~           dMP
+   \`Mb.           \`YMMMb\`OOOI,,,,,IOOOO'dMMMP'           ,dM'
+     \`'                  \`OObNNNNNdOO'                   \`'
+                           \`~OOOOO~'   TISSUE`,
+  `                      <>
+        .-"""-.       ||::::::==========
+       /= ___  \\      ||::::::==========
+      |- /~~~\\  |     ||::::::==========
+      |=( '.' ) |     ||================
+      \\__\\_=_/__/     ||================
+       {_______}      ||================
+     /\` *       \`'--._||
+    /= .     [] .     { >
+   /  /|ooo     |\`'--'|| 
+  (   )\\_______/      ||
+   \\__\\/       \\      ||
+    \`-| ==    \\_|     ||
+      /         |     ||
+     |=   >\\  __/     ||
+     \\   \\ |- --|     ||
+      \\ __| \\___/     ||
+ jgs  _{__} _{__}     ||
+     (    )(    )     ||
+ ^^~  \`""  \`""  ~^^^~^^~~~^^^~^^^~^^^~^^~^`,
+];
+
+
+        function toggleTerminal() {
+            const container = document.querySelector('.container');
+            const terminal = document.getElementById('terminal');
+            container.style.display = 'none';
+            terminal.style.display = 'block';
+            setTimeout(() => terminal.classList.add('active'), 50);
+            document.body.style.backgroundColor = '#000';
+            document.getElementById('terminal-input').focus();
+            typeText('Welcome', () => {
+                setTimeout(() => {
+                    eraseText('Welcome', () => {
+                        typeText('You are now in the interactive terminal for my website.\nType "help" or "info" for website information.', () => {
+                            printPrompt();
+                        });
+                    });
+                }, 420);
+            });
+        }
+
+        function typeText(text, callback, speed = 40) {
+            let i = 0;
+            function type() {
+                if (i < text.length) {
+                    printToTerminal(text.charAt(i), false);
+                    i++;
+                    setTimeout(type, speed);
+                } else if (callback) {
+                    callback();
+                }
+            }
+            type();
+        }
+
+        function eraseText(text, callback, speed = 30) {
+            let i = text.length;
+            function erase() {
+                if (i > 0) {
+                    const output = document.getElementById('terminal-output');
+                    output.innerHTML = output.innerHTML.slice(0, -1);
+                    i--;
+                    setTimeout(erase, speed);
+                } else if (callback) {
+                    callback();
+                }
+            }
+            erase();
+        }
+
+        function handleNameClick() {
+            nameClickCount++;
+            if (nameClickCount === 1) {
+                document.getElementById('name').textContent = 'younes@younes.ca';
+            } else if (nameClickCount === 2) {
+                toggleTerminal();
+            }
+        }
+
+        function handleHighlightClick(event) {
+            if (event.target.classList.contains('highlight') &&
+                ['cryptography', 'cyber security'].includes(event.target.dataset.keyword)) {
+                toggleTerminal();
+            }
+        }
+
+        function printToTerminal(text, newLine = true) {
+            const output = document.getElementById('terminal-output');
+            if (newLine) {
+                output.innerHTML += text + '\n';
+            } else {
+                output.innerHTML += text;
+            }
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function printPrompt() {
+            let prompt = currentDirectory === '/' ? '$ ' : currentDirectory + ' $ ';
+            document.getElementById('prompt').textContent = prompt;
+        }
+
+        function handleCommand(command) {
+            // Clean up any running flappy bird game when executing a new command
+            if (window.currentFlappySpaceHandler) {
+                document.removeEventListener('keydown', window.currentFlappySpaceHandler);
+                window.currentFlappySpaceHandler = null;
+            }
+            
+            const args = command.trim().split(' ');
+            const cmd = args[0].toLowerCase();
+
+            if (command.trim()) {
+                commandHistory.push(command.trim());
+                historyIndex = commandHistory.length;
+            }
+
+            switch(cmd) {
+                case 'help':
+                    if (args.length > 1) {
+                        handleHelpCommand(args[1]);
+                    } else {
+                        printToTerminal('Available commands: cd, ls, info, art, help, clear, nvim, flappybird');
+                        printToTerminal('Type "help [command]" to learn more about that command.');
+                    }
+                    break;
+                case 'nvim':
+                    if (currentDirectory === '/misc') {
+                        openNvim();
+                    } else {
+                        printToTerminal('nvim: Navigate to /misc directory first');
+                    }
+                    break;
+                case 'impossible_ctf':
+                    streamText('Welcome to the "Impossible CTF" challenge. Your task is to break an RSA encryption! Who needs quantum computers when we have you? Let\'s go through the math...', 30);
+                    renderRSAChallenge();
+                    break;
+                case 'flappybird':
+                    startFlappyBird();
+                    break;
+                case 'clear':
+                    document.getElementById('terminal-output').innerHTML = '';
+                    break;
+                case 'more':
+                    streamText('Enjoyer of computers and science. Love to automate processes. Passionate about cryptography and cyber security.\nGraduated Computer Science with Honours in Cyber Security. Taught cryptography in 2023 under my professor. Open source enthusiast and active on X formerly twitter. DM me there or email me if you want to collaborate or hire me. younes@younes.ca', 25); // New streaming text with faster speed
+                    break;
+                case 'cd':
+                    changeDirectory(args[1]);
+                    break;
+                case 'ls':
+                    listDirectory();
+                    break;
+                case 'info':
+                    streamText('Younes Brahimi - Security Software Engineer\nWant to learn more about me? Type "more".', 30);
+                    break;
+                case 'art':
+                    const art = asciiArts[Math.floor(Math.random() * asciiArts.length)];
+                    printToTerminal(art);
+                    break;
+                case 'leaks.exe':
+                    if (currentDirectory === '/usr') {
+                        checkLeaks();
+                    } else {
+                        printToTerminal('Command not found. Navigate to /usr first.');
+                    }
+                    break;
+                case 'whereami':
+                    if (currentDirectory === '/usr') {
+                        printToTerminal('Check your geolocation: <a href="https://browserleaks.com/geo" target="_blank">https://browserleaks.com/geo</a>');
+                    } else {
+                        printToTerminal('Command not found. Navigate to /usr first.');
+                    }
+                    break;
+                case 'haveibeenpwned.exe':
+                    if (currentDirectory === '/usr') {
+                        printToTerminal('A data leak occurs when unauthorized individuals gain access to your personal data.');
+                        printToTerminal('If they match your password\'s hash, they could use it to access your accounts.');
+                        printToTerminal('Check if your info has been involved in a data leak here: <a href="https://haveibeenpwned.com" target="_blank">https://haveibeenpwned.com</a>');
+                    } else {
+                        printToTerminal('Command not found. Navigate to /usr first.');
+                    }
+                    break;
+                default:
+                    if (currentDirectory === '/etc/shadow' && cmd === 'passwd.test') {
+                        runPasswordTest();
+                    } else if (currentDirectory === '/misc' && miscLinks.hasOwnProperty(cmd)) {
+                        openMiscContent(cmd);
+                    } else {
+                        printToTerminal(`Command not found: ${cmd}`);
+                    }
+            }
+            printPrompt();
+        }
+
+        function changeDirectory(dir) {
+            if (!dir) {
+                currentDirectory = '/';
+            } else if (dir === '..') {
+                const parts = currentDirectory.split('/');
+                parts.pop();
+                currentDirectory = parts.join('/') || '/';
+            } else {
+                const newPath = currentDirectory === '/' ? `/${dir}` : `${currentDirectory}/${dir}`;
+                if (fileSystem[newPath]) {
+                    currentDirectory = newPath;
+                } else {
+                    printToTerminal(`Directory not found: ${dir}`);
+                }
+            }
+            printPrompt();
+        }
+
+        function startFlappyBird() {
+                // Clean up any existing flappy bird event listeners
+                if (window.currentFlappySpaceHandler) {
+                    document.removeEventListener('keydown', window.currentFlappySpaceHandler);
+                    window.currentFlappySpaceHandler = null;
+                }
+                
+                const output = document.getElementById('terminal-output');
+                output.innerHTML = '';
+
+                const canvas = document.createElement('canvas');
+                canvas.width = 400;
+                canvas.height = 600;
+                output.appendChild(canvas);
+
+                const ctx = canvas.getContext('2d');
+
+                // Game variables
+                let birdY = canvas.height / 2;
+                let birdX = 50;
+                const birdSize = 20;
+                let birdVelocity = 0;
+                const gravity = 0.6;
+                const lift = -10;
+
+                let pipes = [];
+                const pipeWidth = 50;
+                const pipeGap = 150;
+                const pipeSpawnInterval = 1500; // milliseconds
+
+                let score = 0;
+                let gameOver = false;
+                let gameActive = false;
+
+                // Spawn pipes
+                function spawnPipe() {
+                    const pipeY = Math.random() * (canvas.height - pipeGap);
+                    pipes.push({
+                        x: canvas.width,
+                        topY: pipeY,
+                        bottomY: pipeY + pipeGap
+                    });
+                }
+
+                // Game loop
+                function update() {
+                    if (gameOver) return;
+
+                    // Update bird position
+                    birdVelocity += gravity;
+                    birdY += birdVelocity;
+
+                    // Check collisions
+                    if (birdY > canvas.height - birdSize || birdY < 0) {
+                        gameOver = true;
+                    }
+
+                    // Update pipes
+                    pipes.forEach((pipe, index) => {
+                        pipe.x -= 2;
+
+                        // Check collision with pipe
+                        if (birdX + birdSize > pipe.x && birdX < pipe.x + pipeWidth) {
+                            if (birdY < pipe.topY || birdY + birdSize > pipe.bottomY) {
+                                gameOver = true;
+                            }
+                        }
+
+                        // Increase score
+                        if (pipe.x + pipeWidth < birdX && !pipe.passed) {
+                            score++;
+                            pipe.passed = true;
+                        }
+
+                        // Remove off-screen pipes
+                        if (pipe.x + pipeWidth < 0) {
+                            pipes.splice(index, 1);
+                        }
+                    });
+
+                    draw();
+                    requestAnimationFrame(update);
+                }
+
+                // Draw game elements
+                function draw() {
+                    // Clear canvas
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    // Draw background
+                    ctx.fillStyle = 'skyblue';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                    // Draw bird
+                    ctx.fillStyle = 'yellow';
+                    ctx.beginPath();
+                    ctx.arc(birdX, birdY, birdSize, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Draw pipes
+                    ctx.fillStyle = 'green';
+                    pipes.forEach(pipe => {
+                        ctx.fillRect(pipe.x, 0, pipeWidth, pipe.topY);
+                        ctx.fillRect(pipe.x, pipe.bottomY, pipeWidth, canvas.height - pipe.bottomY);
+                    });
+
+                    // Draw score and high score
+                    ctx.fillStyle = 'white';
+                    ctx.font = '24px Arial';
+                    ctx.fillText(`Score: ${score}`, 10, 30);
+                    ctx.fillText(`High Score: ${flappyHighScore}`, 10, 60);
+
+                    // Draw game over message
+                    if (gameOver) {
+                        // Update high score
+                        if (score > flappyHighScore) {
+                            flappyHighScore = score;
+                        }
+                        ctx.fillStyle = 'black';
+                        ctx.font = '48px Arial';
+                        ctx.fillText('Game Over', canvas.width / 2 - 100, canvas.height / 2);
+                        ctx.font = '24px Arial';
+                        ctx.fillText(`Final Score: ${score}`, canvas.width / 2 - 70, canvas.height / 2 + 40);
+                        ctx.fillText(`High Score: ${flappyHighScore}`, canvas.width / 2 - 70, canvas.height / 2 + 60);
+                        ctx.fillText('Click or spacebar to restart', canvas.width / 2 - 90, canvas.height / 2 + 80);
+                    }
+                }
+
+                // Handle user input
+                function handleJump() {
+                    if (gameOver) {
+                        // Restart game
+                        birdY = canvas.height / 2;
+                        birdVelocity = 0;
+                        pipes = [];
+                        score = 0;
+                        gameOver = false;
+                        gameActive = true;
+                        update();
+                    } else {
+                        // Bird jump
+                        birdVelocity = lift;
+                        gameActive = true;
+                    }
+                }
+                
+                canvas.addEventListener('click', handleJump);
+                
+                // Add spacebar support
+                const spaceHandler = function(e) {
+                    if (e.code === 'Space' || e.key === ' ') {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleJump();
+                    }
+                };
+                document.addEventListener('keydown', spaceHandler);
+                
+                // Store reference for cleanup
+                window.currentFlappySpaceHandler = spaceHandler;
+                
+                // Cleanup function
+                canvas.cleanup = function() {
+                    if (window.currentFlappySpaceHandler) {
+                        document.removeEventListener('keydown', window.currentFlappySpaceHandler);
+                        window.currentFlappySpaceHandler = null;
+                    }
+                };
+
+                // Start game
+                update();
+                const pipeInterval = setInterval(spawnPipe, pipeSpawnInterval);
+                
+                // Enhanced cleanup function
+                canvas.cleanup = function() {
+                    clearInterval(pipeInterval);
+                    if (window.currentFlappySpaceHandler) {
+                        document.removeEventListener('keydown', window.currentFlappySpaceHandler);
+                        window.currentFlappySpaceHandler = null;
+                    }
+                };
+            }
+
+        function listDirectory() {
+            const contents = fileSystem[currentDirectory] || [];
+            printToTerminal(contents.join('  '));
+        }
+        
+        function renderRSAChallenge() {
+                const output = document.getElementById('terminal-output');
+
+                setTimeout(() => {
+                    streamText('RSA involves choosing two large prime numbers, p and q.', null, 25);
+                }, 1000);
+
+                setTimeout(() => {
+                    streamText('You calculate n = p * q.', null, 25);
+                    renderMathOnScreen('n = p \\times q');
+                }, 3000);
+
+                setTimeout(() => {
+                    streamText('Then, compute the totient function, φ(n) = (p-1)(q-1).', null, 25);
+                    renderMathOnScreen('\\phi(n) = (p-1)(q-1)');
+                }, 5000);
+
+                setTimeout(() => {
+                    streamText('Choose an integer e such that 1 < e < φ(n) and e is coprime to φ(n).', null, 25);
+                    renderMathOnScreen('e \\in \\mathbb{Z},\\quad 1 < e < \\phi(n),\\quad gcd(e, \\phi(n)) = 1');
+                }, 7000);
+
+                setTimeout(() => {
+                    streamText('The public key is (n, e).', null, 25);
+                    renderMathOnScreen('\\text{Public Key} = (n, e)');
+                }, 9000);
+
+                setTimeout(() => {
+                    streamText('Now, calculate the private key d such that d * e ≡ 1 (mod φ(n)).', null, 25);
+                    renderMathOnScreen('d \\times e \\equiv 1 \\pmod{\\phi(n)}');
+                }, 11000);
+
+                setTimeout(() => {
+                    streamText('The private key is (n, d). The challenge is to factor n and find p and q.', null, 25);
+                    renderMathOnScreen('\\text{Private Key} = (n, d)');
+                }, 13000);
+
+                setTimeout(() => {
+                    streamText('Given a large n, factorizing it to retrieve p and q is computationally infeasible!', null, 25);
+                }, 15000);
+            }
+
+            function renderMathOnScreen(math) {
+                const output = document.getElementById('terminal-output');
+                const mathDiv = document.createElement('div');
+                mathDiv.style.marginTop = '10px';
+                mathDiv.innerHTML = `\\(${math}\\)`;
+                output.appendChild(mathDiv);
+
+                // Trigger LaTeX rendering with MathJax (requires MathJax to be included in the HTML)
+                if (typeof MathJax !== 'undefined') {
+                    MathJax.typesetPromise([mathDiv]);
+                }
+            }
+
+        function runPasswordTest() {
+            printToTerminal('Enter a password to test its strength:');
+            document.getElementById('terminal-input').type = 'password';
+            document.getElementById('terminal-input').onkeydown = function(e) {
+                if (e.key === 'Enter') {
+                    const password = this.value;
+                    printToTerminal('I hope you didnt put your real password here. Don\'t trust people like that.');
+                    printToTerminal('Remember to always use Multi-Factor Authentication (MFA) for better security!');
+                    printToTerminal('<a href="https://en.wikipedia.org/wiki/Multi-factor_authentication" target="_blank">Learn more about MFA</a>');
+                    document.getElementById('terminal-input').type = 'text';
+                    document.getElementById('terminal-input').onkeydown = null;
+                    printPrompt();
+                }
+            };
+        }
+
+        function checkLeaks() {
+            printToTerminal('Check for DNS leaks: <a href="https://www.dnsleaktest.com/" target="_blank">https://www.dnsleaktest.com/</a>');
+            printToTerminal('Check for WebRTC leaks: <a href="https://browserleaks.com/webrtc" target="_blank">https://browserleaks.com/webrtc</a>');
+        }
+
+        function streamText(text, speed = 30) {
+            let i = 0;
+            function stream() {
+                if (i < text.length) {
+                    printToTerminal(text.charAt(i), false);
+                    i++;
+                    setTimeout(stream, speed);
+                } else {
+                    printToTerminal('', true);
+                }
+            }
+            stream();
+        }
+
+        function openMiscContent(fileName) {
+            const frame = document.getElementById('misc-frame');
+            const frameHeader = document.getElementById('misc-frame-header');
+            const frameIframe = document.getElementById('misc-frame-iframe');
+            const miscFileName = document.getElementById('misc-filename');
+
+            // Close existing content if open
+            if (frame.style.display === 'block') {
+                closeMiscContent();
+            }
+
+            miscFileName.textContent = fileName;
+            frameIframe.src = miscLinks[fileName];
+            frame.style.display = 'block';
+
+            // Maximize button functionality
+            document.getElementById('maximize-btn').onclick = function() {
+                if (frame.style.width === '100%' && frame.style.height === '100%') {
+                    frame.style.width = '560px';
+                    frame.style.height = '315px';
+                    frame.style.right = '20px';
+                    frame.style.top = '20px';
+                    document.getElementById('maximize-btn').textContent = '⌞ ⌝'; // Change back to maximize button
+                } else {
+                    frame.style.width = '100%';
+                    frame.style.height = '100%';
+                    frame.style.right = '0';
+                    frame.style.top = '0';
+                    document.getElementById('maximize-btn').textContent = '⌞⌝'; // Change to minimize button
+                }
+            };
+
+            // Open in new tab functionality
+            document.getElementById('open-tab-btn').onclick = function() {
+                window.open(miscLinks[fileName].replace('/embed/', '/watch?v='), '_blank');
+            };
+
+            // Close button functionality
+            document.getElementById('close-btn').onclick = closeMiscContent;
+
+            makeElementDraggable(frame);
+        }
+
+        function closeMiscContent() {
+            const frame = document.getElementById('misc-frame');
+            const frameIframe = document.getElementById('misc-frame-iframe');
+
+            frame.style.display = 'none';
+            frame.style.width = '560px';
+            frame.style.height = '315px';
+            frame.style.right = '20px';
+            frame.style.top = '20px';
+            frameIframe.src = ''; // Stop the video/audio or unload the content
+        }
+
+        function handleHelpCommand(command) {
+            switch(command.toLowerCase()) {
+                case 'cd':
+                    printToTerminal('cd: Change the current directory.');
+                    printToTerminal('Usage: cd [directory]');
+                    break;
+                case 'ls':
+                    printToTerminal('ls: List the contents of the current directory.');
+                    printToTerminal('Usage: ls');
+                    break;
+                case 'info':
+                    printToTerminal('info: Display information about Younes Brahimi.');
+                    printToTerminal('Usage: info');
+                    break;
+                case 'art':
+                    printToTerminal('art: Display random ASCII art.');
+                    printToTerminal('Usage: art');
+                    break;
+                case 'clear':
+                    printToTerminal('clear: Clear the terminal screen.');
+                    printToTerminal('Usage: clear');
+                    break;
+                case 'help':
+                    printToTerminal('help: Display help information.');
+                    printToTerminal('Usage: help [command]');
+                    break;
+                case 'nvim':
+                    printToTerminal('nvim: Open nvim editor for /misc directory.');
+                    printToTerminal('Usage: nvim (must be in /misc directory)');
+                    printToTerminal('Controls: hjkl or arrow keys to navigate, left/right to open/close, ESC to exit');
+                    break;
+                case 'flappybird':
+                    printToTerminal('flappybird: Play the classic Flappy Bird game.');
+                    printToTerminal('Usage: flappybird');
+                    printToTerminal('Controls: Click or spacebar to jump, tracks high score during session');
+                    break;
+                default:
+                    printToTerminal(`No help available for ${command}`);
+            }
+        }
+
+        function makeElementDraggable(elmnt) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            const header = elmnt.querySelector(".misc-content-frame-header");
+            if (header) {
+                header.onmousedown = dragMouseDown;
+                header.ontouchstart = dragMouseDown; // For touch devices
+            }
+
+            function dragMouseDown(e) {
+                e = e || window.event;
+                e.preventDefault();
+                pos3 = e.clientX || e.touches[0].clientX;
+                pos4 = e.clientY || e.touches[0].clientY;
+                document.onmouseup = closeDragElement;
+                document.ontouchend = closeDragElement;
+                document.onmousemove = elementDrag;
+                document.ontouchmove = elementDrag;
+            }
+
+            function elementDrag(e) {
+                e = e || window.event;
+                e.preventDefault();
+                pos1 = pos3 - (e.clientX || e.touches[0].clientX);
+                pos2 = pos4 - (e.clientY || e.touches[0].clientY);
+                pos3 = e.clientX || e.touches[0].clientX;
+                pos4 = e.clientY || e.touches[0].clientY;
+                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+            }
+
+            function closeDragElement() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+                document.ontouchend = null;
+                document.ontouchmove = null;
+            }
+        }
+        
+        function openNvim() {
+            nvimOpen = true;
+            nvimFiles = fileSystem['/misc'] || [];
+            nvimSelectedIndex = 0;
+            
+            const nvimInterface = document.getElementById('nvim-interface');
+            nvimInterface.style.display = 'block';
+            
+            renderNvimFileList();
+            
+            // Add keyboard event listeners for nvim
+            document.addEventListener('keydown', handleNvimKeyboard);
+        }
+        
+        function closeNvim() {
+            nvimOpen = false;
+            const nvimInterface = document.getElementById('nvim-interface');
+            nvimInterface.style.display = 'none';
+            
+            // Remove keyboard event listeners
+            document.removeEventListener('keydown', handleNvimKeyboard);
+            
+            // Clean up any flappy bird listeners when closing nvim
+            if (window.currentFlappySpaceHandler) {
+                document.removeEventListener('keydown', window.currentFlappySpaceHandler);
+                window.currentFlappySpaceHandler = null;
+            }
+            
+            // Clear content
+            document.getElementById('nvim-content').innerHTML = `
+                <div style="color: #888; text-align: center; margin-top: 100px;">
+                    <h3>Welcome to nvim</h3>
+                    <p>Use hjkl or arrow keys to navigate files</p>
+                    <p>Use left/right to open/close files</p>
+                    <p>Click on files to open them</p>
+                </div>
+            `;
+        }
+        
+        function renderNvimFileList() {
+            const fileList = document.getElementById('nvim-file-list');
+            fileList.innerHTML = '';
+            
+            nvimFiles.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'nvim-file-item file';
+                fileItem.textContent = file;
+                
+                if (index === nvimSelectedIndex) {
+                    fileItem.classList.add('selected');
+                }
+                
+                fileItem.onclick = () => {
+                    nvimSelectedIndex = index;
+                    renderNvimFileList();
+                    openNvimFile(file);
+                };
+                
+                fileList.appendChild(fileItem);
+            });
+        }
+        
+        function openNvimFile(filename) {
+            const nvimContent = document.getElementById('nvim-content');
+            const nvimStatus = document.getElementById('nvim-status');
+            
+            if (filename === 'hackernews_thread_abt_me') {
+                nvimContent.innerHTML = `
+                    <div style="color: #888; text-align: center; margin-top: 100px;">
+                        <h3>HackerNews Thread</h3>
+                        <p>Content cannot be embedded due to security policy</p>
+                        <button onclick="window.open('https://news.ycombinator.com/item?id=40615653', '_blank')" 
+                                style="padding: 10px 20px; margin-top: 20px; background: #238636; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                            Open in New Tab
+                        </button>
+                    </div>
+                `;
+                nvimStatus.textContent = `HackerNews thread (cannot embed) • Use hjkl or arrow keys to navigate • ESC to close nvim`;
+                nvimStatus.classList.remove('gains-highlight');
+            } else if (miscLinks[filename]) {
+                nvimContent.innerHTML = `
+                    <iframe src="${miscLinks[filename]}" style="width: 100%; height: 80vh; border: none; background-color: #ffffff;"
+                            onerror="this.style.display='none'; this.parentNode.innerHTML='<div style=\'color: #888; text-align: center; margin-top: 100px;\'><h3>${filename}</h3><p>Content cannot be embedded due to security policy</p><button onclick=\'window.open(\'${miscLinks[filename]}\', \'_blank\')\'  style=\'padding: 10px 20px; margin-top: 20px; background: #238636; color: white; border: none; border-radius: 5px; cursor: pointer;\'>Open in New Tab</button></div>';">
+                    </iframe>
+                `;
+                nvimStatus.textContent = `Opened: ${filename} • Use hjkl or arrow keys to navigate • ESC to close nvim`;
+                nvimStatus.classList.remove('gains-highlight');
+            } else {
+                nvimContent.innerHTML = `
+                    <div style="color: #888; text-align: center; margin-top: 100px;">
+                        <h3>File: ${filename}</h3>
+                        <p>No preview available</p>
+                    </div>
+                `;
+                nvimStatus.textContent = `Selected: ${filename} • Use hjkl or arrow keys to navigate • ESC to close nvim`;
+                nvimStatus.classList.remove('gains-highlight');
+            }
+        }
+        
+        function handleNvimKeyboard(e) {
+            if (!nvimOpen) return;
+            
+            e.preventDefault();
+            
+            switch(e.key) {
+                case 'Escape':
+                    closeNvim();
+                    break;
+                case 'h':
+                case 'ArrowLeft':
+                    // Close current file (return to welcome screen)
+                    document.getElementById('nvim-content').innerHTML = `
+                        <div style="color: #888; text-align: center; margin-top: 100px;">
+                            <h3>Welcome to nvim</h3>
+                            <p>Use hjkl or arrow keys to navigate files</p>
+                            <p>Use left/right to open/close files</p>
+                            <p>Click on files to open them</p>
+                        </div>
+                    `;
+                    document.getElementById('nvim-status').textContent = 'Use hjkl or arrow keys to navigate • left/right to open/close • ESC to close nvim';
+                    break;
+                case 'l':
+                case 'ArrowRight':
+                case 'Enter':
+                    // Open selected file
+                    if (nvimFiles[nvimSelectedIndex]) {
+                        openNvimFile(nvimFiles[nvimSelectedIndex]);
+                    }
+                    break;
+                case 'j':
+                case 'ArrowDown':
+                    // Move down in file list
+                    nvimSelectedIndex = (nvimSelectedIndex + 1) % nvimFiles.length;
+                    renderNvimFileList();
+                    break;
+                case 'k':
+                case 'ArrowUp':
+                    // Move up in file list
+                    nvimSelectedIndex = (nvimSelectedIndex - 1 + nvimFiles.length) % nvimFiles.length;
+                    renderNvimFileList();
+                    break;
+            }
+        }
+
+        document.getElementById('name').addEventListener('click', handleNameClick);
+        document.getElementById('about').addEventListener('click', handleHighlightClick);
+        document.getElementById('terminal-input').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const command = this.value;
+                printToTerminal(currentDirectory + ' $ ' + command);
+                handleCommand(command);
+                this.value = '';
+                historyIndex = commandHistory.length; // Reset history index to latest command
+            } else if (e.key === 'Tab') {
+                e.preventDefault();
+                const input = this.value;
+                const possibleCompletions = fileSystem[currentDirectory].filter(item => item.startsWith(input));
+                
+                if (possibleCompletions.length === 1) {
+                    this.value = possibleCompletions[0];
+                } else if (possibleCompletions.length > 1) {
+                    printToTerminal(possibleCompletions.join('  '));
+                    printPrompt();
+                    this.value = input;
+                }
+            } else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (e.key === 'ArrowUp') {
+                    if (historyIndex > 0) historyIndex--;
+                } else if (historyIndex < commandHistory.length) historyIndex++;
+                this.value = commandHistory[historyIndex] || '';
+            }
+            printPrompt();
+        });
+        
+        // Prevent nvim keyboard shortcuts from interfering with terminal
+        document.addEventListener('keydown', function(e) {
+            if (nvimOpen && (e.key === 'h' || e.key === 'j' || e.key === 'k' || e.key === 'l')) {
+                e.stopPropagation();
+            }
+        });
+        
+    </script>
+</body>
+</html>
