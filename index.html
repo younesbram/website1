@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.7, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes">
     <title>younes</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤩</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>≡ƒñ⌐</text></svg>">
     <meta name="description" content="younes, security software engineer, enjoyer of computers and science">
     <style>
         body, html {
@@ -78,6 +78,7 @@
             overflow-y: auto;
             opacity: 0;
             transition: opacity 0.5s ease;
+            scroll-behavior: smooth;
         }
         
         @media (max-width: 768px) {
@@ -150,21 +151,30 @@
         }
         .misc-content-frame {
             display: none;
-            position: absolute;
-            right: 20px;
-            top: 20px;
+            position: fixed;
+            left: calc(50% - 280px);
+            top: 50px;
             width: 560px;
             height: 315px;
             background-color: #2c3e50;
-            border: 1px solid #34495e;
-            padding: 5px;
+            border: 2px solid #34495e;
             box-sizing: border-box;
             z-index: 10;
-            cursor: move;
+            min-width: 300px;
+            min-height: 200px;
+            transition: none;
+        }
+        .misc-content-frame.maximized {
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
         }
         .misc-content-frame iframe {
             width: 100%;
-            height: 100%;
+            height: calc(100% - 30px);
             border: none;
         }
         .misc-content-frame-header {
@@ -176,6 +186,7 @@
             display: flex;
             justify-content: space-between;
             cursor: grab;
+            user-select: none;
         }
         .misc-content-frame-header button {
             background: none;
@@ -183,6 +194,72 @@
             color: #ecf0f1;
             cursor: pointer;
             font-size: 14px;
+            padding: 5px 8px;
+        }
+        .misc-content-frame-header button:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        /* Resize handles */
+        .resize-handle {
+            position: absolute;
+            z-index: 11;
+        }
+        .resize-handle.top {
+            top: 0;
+            left: 15px;
+            right: 15px;
+            height: 8px;
+            cursor: ns-resize;
+        }
+        .resize-handle.bottom {
+            bottom: 0;
+            left: 15px;
+            right: 15px;
+            height: 8px;
+            cursor: ns-resize;
+        }
+        .resize-handle.left {
+            left: 0;
+            top: 15px;
+            bottom: 15px;
+            width: 8px;
+            cursor: ew-resize;
+        }
+        .resize-handle.right {
+            right: 0;
+            top: 15px;
+            bottom: 15px;
+            width: 8px;
+            cursor: ew-resize;
+        }
+        .resize-handle.top-left {
+            top: 0;
+            left: 0;
+            width: 15px;
+            height: 15px;
+            cursor: nwse-resize;
+        }
+        .resize-handle.top-right {
+            top: 0;
+            right: 0;
+            width: 15px;
+            height: 15px;
+            cursor: nesw-resize;
+        }
+        .resize-handle.bottom-left {
+            bottom: 0;
+            left: 0;
+            width: 15px;
+            height: 15px;
+            cursor: nesw-resize;
+        }
+        .resize-handle.bottom-right {
+            bottom: 0;
+            right: 0;
+            width: 15px;
+            height: 15px;
+            cursor: nwse-resize;
         }
         
         #nvim-interface {
@@ -454,8 +531,8 @@
 <body>
     <div class="container">
         <h1 id="name">younes brahimi</h1>
-        <p>security software engineer</p>
-        <p id="about">Greetings! I am a security software engineer.  Email me if you want to contact me :).</p>
+        <p>computer scientist</p>
+        <p id="about">Greetings! I am a security software engineer, infrastructure engineer, site reliability engineer, whatever you want.  Email me if you want to contact me :).</p>
         <div id="links">
             <a href="https://github.com/younesbram" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
             <a href="mailto:younes@younes.ca"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 3v18h24v-18h-24zm21.518 2l-9.518 7.713-9.518-7.713h19.036zm-19.518 14v-11.817l10 8.104 10-8.104v11.817h-20z"/></svg></a>
@@ -476,18 +553,26 @@
         <div class="misc-content-frame-header" id="misc-frame-header">
             <span id="misc-filename"></span>
             <span>
-                <button id="maximize-btn">⌞⌝</button>
-                <button id="open-tab-btn">👉</button>
-                <button id="close-btn">❌</button>
+                <button id="maximize-btn">Γî₧Γî¥</button>
+                <button id="open-tab-btn">≡ƒæë</button>
+                <button id="close-btn">Γ¥î</button>
             </span>
         </div>
         <iframe id="misc-frame-iframe"></iframe>
+        <div class="resize-handle top"></div>
+        <div class="resize-handle bottom"></div>
+        <div class="resize-handle left"></div>
+        <div class="resize-handle right"></div>
+        <div class="resize-handle top-left"></div>
+        <div class="resize-handle top-right"></div>
+        <div class="resize-handle bottom-left"></div>
+        <div class="resize-handle bottom-right"></div>
     </div>
     
     <div id="nvim-interface">
         <div class="nvim-header">
             <div class="nvim-title">nvim - /misc</div>
-            <button class="nvim-close" onclick="closeNvim()">✕</button>
+            <button class="nvim-close" onclick="closeNvim()">Γ£ò</button>
         </div>
         <div class="nvim-container">
             <div class="nvim-sidebar" id="nvim-sidebar">
@@ -504,10 +589,9 @@
             </div>
         </div>
         <div class="nvim-status" id="nvim-status">
-            Use hjkl or arrow keys to navigate • left/right to open/close • ESC to close nvim
+            Use hjkl or arrow keys to navigate ΓÇó left/right to open/close ΓÇó ESC to close nvim
         </div>
     </div>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -525,10 +609,11 @@
             '/usr': ['leaks.exe', 'whereami', 'haveibeenpwned.exe'],
             '/etc': ['shadow'],
             '/etc/shadow': ['passwd.test'],
-            '/misc': ['yup.mp4', 'cheap_offsec_team.html', 'security_books.html', 'diet_motivation--.mp4', 'diet_motivation++.mp4', 'the_professor_and1.mp4', 'legend_from_madeira.mp4']
+            '/misc': ['zhilyova.mp4', 'yup.mp4', 'cheap_offsec_team.html', 'security_books.html', 'diet_motivation--.mp4', 'diet_motivation++.mp4', 'the_professor_and1.mp4', 'legend_from_madeira.mp4']
         };
 
         const miscLinks = {
+            'zhilyova.mp4': 'https://raw.githubusercontent.com/younesbram/website1/main/zhilyova-my-work.mp4.mp4',
             'yup.mp4': 'https://www.youtube.com/embed/_m0bI82Rz_k',
             'cheap_offsec_team.html': 'https://arxiv.org/html/2406.01637v1',
             'security_books.html': 'https://people.scs.carleton.ca/~paulv/5900wBooks.html',
@@ -536,6 +621,10 @@
             'diet_motivation++.mp4': 'https://www.youtube.com/embed/l4OIzjpKTXI',
             'the_professor_and1.mp4': 'https://www.youtube.com/embed/LweNdi92DW0',
             'legend_from_madeira.mp4': 'https://www.youtube.com/embed/xqFTe96OWPU'
+        };
+
+        const miscCaptions = {
+            'zhilyova.mp4': 'Interactive 3D globe in three.js with optimized grid loading for mobile'
         };
 
         const asciiArts = [
@@ -862,19 +951,26 @@ _)      \\.___.,|     .'
             }
         }
 
-        function printToTerminal(text, newLine = true) {
+        function printToTerminal(text, newLine = true, skipScroll = false) {
             const output = document.getElementById('terminal-output');
+            const terminal = document.getElementById('terminal');
             if (newLine) {
                 output.innerHTML += text + '\n';
             } else {
                 output.innerHTML += text;
             }
-            output.scrollTop = output.scrollHeight;
+            // Scroll the terminal container to bottom (unless skipped for performance)
+            if (!skipScroll) {
+                terminal.scrollTop = terminal.scrollHeight;
+            }
         }
 
         function printPrompt() {
             let prompt = currentDirectory === '/' ? '$ ' : currentDirectory + ' $ ';
             document.getElementById('prompt').textContent = prompt;
+            // Auto-scroll to bottom when prompt is shown
+            const terminal = document.getElementById('terminal');
+            terminal.scrollTop = terminal.scrollHeight;
         }
 
         function handleCommand(command) {
@@ -1188,12 +1284,12 @@ _)      \\.___.,|     .'
                 }, 3000);
 
                 setTimeout(() => {
-                    streamText('Then, compute the totient function, φ(n) = (p-1)(q-1).', null, 25);
+                    streamText('Then, compute the totient function, ╧å(n) = (p-1)(q-1).', null, 25);
                     renderMathOnScreen('\\phi(n) = (p-1)(q-1)');
                 }, 5000);
 
                 setTimeout(() => {
-                    streamText('Choose an integer e such that 1 < e < φ(n) and e is coprime to φ(n).', null, 25);
+                    streamText('Choose an integer e such that 1 < e < ╧å(n) and e is coprime to ╧å(n).', null, 25);
                     renderMathOnScreen('e \\in \\mathbb{Z},\\quad 1 < e < \\phi(n),\\quad gcd(e, \\phi(n)) = 1');
                 }, 7000);
 
@@ -1203,7 +1299,7 @@ _)      \\.___.,|     .'
                 }, 9000);
 
                 setTimeout(() => {
-                    streamText('Now, calculate the private key d such that d * e ≡ 1 (mod φ(n)).', null, 25);
+                    streamText('Now, calculate the private key d such that d * e Γëí 1 (mod ╧å(n)).', null, 25);
                     renderMathOnScreen('d \\times e \\equiv 1 \\pmod{\\phi(n)}');
                 }, 11000);
 
@@ -1253,10 +1349,16 @@ _)      \\.___.,|     .'
 
         function streamText(text, speed = 30) {
             let i = 0;
+            const terminal = document.getElementById('terminal');
             function stream() {
                 if (i < text.length) {
-                    printToTerminal(text.charAt(i), false);
+                    // Skip scroll for individual characters, we'll scroll manually
+                    printToTerminal(text.charAt(i), false, true);
                     i++;
+                    // Only scroll every 15 characters for smoother performance
+                    if (i % 15 === 0) {
+                        terminal.scrollTop = terminal.scrollHeight;
+                    }
                     setTimeout(stream, speed);
                 } else {
                     printToTerminal('', true);
@@ -1265,7 +1367,7 @@ _)      \\.___.,|     .'
             stream();
         }
 
-        function openMiscContent(fileName) {
+        function openMiscContent(fileName, fromHash = false) {
             const frame = document.getElementById('misc-frame');
             const frameHeader = document.getElementById('misc-frame-header');
             const frameIframe = document.getElementById('misc-frame-iframe');
@@ -1277,48 +1379,159 @@ _)      \\.___.,|     .'
             }
 
             miscFileName.textContent = fileName;
-            frameIframe.src = miscLinks[fileName];
+
+            // Set vertical dimensions for zhilyova.mp4
+            if (fileName === 'zhilyova.mp4') {
+                frame.style.width = '450px';
+                frame.style.height = '975px';
+                frame.style.left = 'calc(50% - 225px)';
+                frame.style.top = '10px';
+            } else {
+                // Reset to default horizontal dimensions
+                frame.style.width = '560px';
+                frame.style.height = '315px';
+                frame.style.left = 'calc(50% - 280px)';
+                frame.style.top = '50px';
+            }
+
+            // Special handling for zhilyova.mp4
+            if (fileName === 'zhilyova.mp4') {
+                const caption = miscCaptions[fileName] || '';
+                frameIframe.style.display = 'none';
+                const videoContainer = document.createElement('div');
+                videoContainer.id = 'video-container';
+                videoContainer.style.cssText = 'width: 100%; height: calc(100% - 30px); display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 15px 10px; background-color: #2c3e50; overflow-y: auto; box-sizing: border-box;';
+
+                videoContainer.innerHTML = `
+                    ${caption ? `
+                    <div style="background: #ffffff; padding: 10px 14px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); margin-bottom: 15px; max-width: 95%; text-align: center; position: relative; flex-shrink: 0;">
+                        <div style="position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 8px solid #ffffff;"></div>
+                        <p style="margin: 0; color: #2c3e50; font-size: 0.85em; line-height: 1.3;">${caption}</p>
+                    </div>
+                    ` : ''}
+                    <div style="background: #ffffff; border-radius: 10px; box-shadow: 0 6px 14px rgba(0,0,0,0.15); padding: 6px; width: 95%; flex-shrink: 0;">
+                        <video controls autoplay muted loop playsinline style="width: 100%; height: auto; border-radius: 6px; display: block; max-height: none;">
+                            <source src="${miscLinks[fileName]}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                `;
+
+                frame.appendChild(videoContainer);
+            } else {
+                // Clean up any existing video container
+                const oldVideoContainer = document.getElementById('video-container');
+                if (oldVideoContainer) {
+                    oldVideoContainer.remove();
+                }
+                frameIframe.style.display = 'block';
+                frameIframe.src = miscLinks[fileName];
+            }
+
             frame.style.display = 'block';
 
             // Maximize button functionality
             document.getElementById('maximize-btn').onclick = function() {
-                if (frame.style.width === '100%' && frame.style.height === '100%') {
-                    frame.style.width = '560px';
-                    frame.style.height = '315px';
-                    frame.style.right = '20px';
-                    frame.style.top = '20px';
-                    document.getElementById('maximize-btn').textContent = '⌞ ⌝'; // Change back to maximize button
+                if (frame.classList.contains('maximized')) {
+                    frame.classList.remove('maximized');
+                    // Restore previous dimensions
+                    if (frame.dataset.prevWidth) {
+                        frame.style.width = frame.dataset.prevWidth;
+                        frame.style.height = frame.dataset.prevHeight;
+                        frame.style.top = frame.dataset.prevTop;
+                        frame.style.left = frame.dataset.prevLeft;
+                        frame.style.right = 'auto';
+                        frame.style.bottom = 'auto';
+                    }
+                    document.getElementById('maximize-btn').textContent = 'Γî₧Γî¥';
                 } else {
-                    frame.style.width = '100%';
-                    frame.style.height = '100%';
-                    frame.style.right = '0';
-                    frame.style.top = '0';
-                    document.getElementById('maximize-btn').textContent = '⌞⌝'; // Change to minimize button
+                    // Save current dimensions
+                    frame.dataset.prevWidth = frame.style.width || '560px';
+                    frame.dataset.prevHeight = frame.style.height || '315px';
+                    frame.dataset.prevTop = frame.style.top || '20px';
+                    frame.dataset.prevLeft = frame.style.left || 'auto';
+                    frame.classList.add('maximized');
+                    document.getElementById('maximize-btn').textContent = 'ΓîƒΓî₧';
                 }
             };
 
             // Open in new tab functionality
             document.getElementById('open-tab-btn').onclick = function() {
-                window.open(miscLinks[fileName].replace('/embed/', '/watch?v='), '_blank');
+                const url = miscLinks[fileName];
+                window.open(fileName === 'zhilyova.mp4' ? url : url.replace('/embed/', '/watch?v='), '_blank');
             };
 
             // Close button functionality
             document.getElementById('close-btn').onclick = closeMiscContent;
 
             makeElementDraggable(frame);
+            makeElementResizable(frame);
+
+            // Update URL hash only if not already from hash change (prevent infinite loop)
+            if (!fromHash) {
+                const newHash = fileName.replace('.mp4', '').replace('.html', '');
+                if (window.location.hash !== '#' + newHash) {
+                    window.location.hash = newHash;
+                }
+            }
         }
 
         function closeMiscContent() {
             const frame = document.getElementById('misc-frame');
             const frameIframe = document.getElementById('misc-frame-iframe');
+            const videoContainer = document.getElementById('video-container');
 
             frame.style.display = 'none';
             frame.style.width = '560px';
             frame.style.height = '315px';
-            frame.style.right = '20px';
-            frame.style.top = '20px';
+            frame.style.left = 'calc(50% - 280px)';
+            frame.style.top = '50px';
+            frame.style.right = 'auto';
+            frame.style.bottom = 'auto';
+            frame.classList.remove('maximized');
             frameIframe.src = ''; // Stop the video/audio or unload the content
+            frameIframe.style.display = 'block'; // Reset iframe display
+
+            // Remove video container if it exists
+            if (videoContainer) {
+                videoContainer.remove();
+            }
+
+            // Clear URL hash
+            if (window.location.hash) {
+                history.pushState("", document.title, window.location.pathname + window.location.search);
+            }
         }
+
+        // Handle URL hash on page load and hash changes
+        function handleHashRoute() {
+            const hash = window.location.hash.substring(1); // Remove the #
+            if (hash) {
+                // Try to find matching file in misc
+                const possibleFiles = [
+                    hash + '.mp4',
+                    hash + '.html',
+                    hash
+                ];
+
+                for (const fileName of possibleFiles) {
+                    if (miscLinks[fileName]) {
+                        // Navigate to /misc in terminal first if needed
+                        if (currentDirectory !== '/misc') {
+                            currentDirectory = '/misc';
+                        }
+                        openMiscContent(fileName, true); // Pass true to indicate from hash
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Listen for hash changes
+        window.addEventListener('hashchange', handleHashRoute);
+
+        // Handle initial hash on page load
+        window.addEventListener('load', handleHashRoute);
 
         function handleHelpCommand(command) {
             switch(command.toLowerCase()) {
@@ -1370,6 +1583,7 @@ _)      \\.___.,|     .'
             }
 
             function dragMouseDown(e) {
+                if (elmnt.classList.contains('maximized')) return; // Don't drag when maximized
                 e = e || window.event;
                 e.preventDefault();
                 pos3 = e.clientX || e.touches[0].clientX;
@@ -1389,6 +1603,8 @@ _)      \\.___.,|     .'
                 pos4 = e.clientY || e.touches[0].clientY;
                 elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
                 elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+                elmnt.style.right = 'auto';
+                elmnt.style.bottom = 'auto';
             }
 
             function closeDragElement() {
@@ -1396,6 +1612,79 @@ _)      \\.___.,|     .'
                 document.onmousemove = null;
                 document.ontouchend = null;
                 document.ontouchmove = null;
+            }
+        }
+
+        function makeElementResizable(elmnt) {
+            const handles = elmnt.querySelectorAll('.resize-handle');
+            let isResizing = false;
+
+            handles.forEach(handle => {
+                handle.addEventListener('mousedown', initResize);
+                handle.addEventListener('touchstart', initResize);
+            });
+
+            function initResize(e) {
+                if (elmnt.classList.contains('maximized')) return; // Don't resize when maximized
+
+                // Only start resize if actually clicking on a handle
+                if (!e.target.classList.contains('resize-handle')) return;
+
+                e.preventDefault();
+                e.stopPropagation();
+
+                isResizing = true;
+                const handle = e.target;
+                const rect = elmnt.getBoundingClientRect();
+                const startX = e.clientX || e.touches[0].clientX;
+                const startY = e.clientY || e.touches[0].clientY;
+                const startWidth = rect.width;
+                const startHeight = rect.height;
+                const startTop = rect.top;
+                const startLeft = rect.left;
+
+                function doResize(e) {
+                    if (!isResizing) return;
+
+                    e.preventDefault();
+                    const currentX = e.clientX || e.touches[0].clientX;
+                    const currentY = e.clientY || e.touches[0].clientY;
+                    const deltaX = currentX - startX;
+                    const deltaY = currentY - startY;
+
+                    if (handle.classList.contains('right') || handle.classList.contains('bottom-right') || handle.classList.contains('top-right')) {
+                        elmnt.style.width = Math.max(300, startWidth + deltaX) + 'px';
+                    }
+                    if (handle.classList.contains('left') || handle.classList.contains('bottom-left') || handle.classList.contains('top-left')) {
+                        const newWidth = Math.max(300, startWidth - deltaX);
+                        elmnt.style.width = newWidth + 'px';
+                        elmnt.style.left = (startLeft + deltaX) + 'px';
+                    }
+                    if (handle.classList.contains('bottom') || handle.classList.contains('bottom-right') || handle.classList.contains('bottom-left')) {
+                        elmnt.style.height = Math.max(200, startHeight + deltaY) + 'px';
+                    }
+                    if (handle.classList.contains('top') || handle.classList.contains('top-right') || handle.classList.contains('top-left')) {
+                        const newHeight = Math.max(200, startHeight - deltaY);
+                        elmnt.style.height = newHeight + 'px';
+                        elmnt.style.top = (startTop + deltaY) + 'px';
+                    }
+
+                    elmnt.style.right = 'auto';
+                    elmnt.style.bottom = 'auto';
+                }
+
+                function stopResize() {
+                    isResizing = false;
+                    document.removeEventListener('mousemove', doResize);
+                    document.removeEventListener('mouseup', stopResize);
+                    document.removeEventListener('touchmove', doResize);
+                    document.removeEventListener('touchend', stopResize);
+                }
+
+                document.addEventListener('mousemove', doResize);
+                document.addEventListener('mouseup', stopResize);
+                document.addEventListener('touchmove', doResize);
+                document.addEventListener('touchend', stopResize);
             }
         }
         
@@ -1476,7 +1765,27 @@ _)      \\.___.,|     .'
                         </button>
                     </div>
                 `;
-                nvimStatus.textContent = `HackerNews thread (cannot embed) • Use hjkl or arrow keys to navigate • ESC to close nvim`;
+                nvimStatus.textContent = `HackerNews thread (cannot embed) ΓÇó Use hjkl or arrow keys to navigate ΓÇó ESC to close nvim`;
+                nvimStatus.classList.remove('gains-highlight');
+            } else if (filename === 'zhilyova.mp4' && miscLinks[filename]) {
+                const caption = miscCaptions[filename] || '';
+                nvimContent.innerHTML = `
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 80vh; padding: 20px;">
+                        ${caption ? `
+                        <div style="position: relative; background: #ffffff; padding: 15px 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); margin-bottom: 20px; max-width: 90%; text-align: center;">
+                            <div style="position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid #ffffff;"></div>
+                            <p style="margin: 0; color: #2c3e50; font-size: 1em; line-height: 1.5;">${caption}</p>
+                        </div>
+                        ` : ''}
+                        <div style="background: #ffffff; border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,0.1); padding: 10px; max-width: min(500px, 90%); width: 100%;">
+                            <video controls autoplay muted loop playsinline style="width: 100%; height: auto; border-radius: 8px; display: block;">
+                                <source src="${miscLinks[filename]}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                    </div>
+                `;
+                nvimStatus.textContent = `Opened: ${filename} ΓÇó Use hjkl or arrow keys to navigate ΓÇó ESC to close nvim`;
                 nvimStatus.classList.remove('gains-highlight');
             } else if (miscLinks[filename]) {
                 nvimContent.innerHTML = `
@@ -1484,7 +1793,7 @@ _)      \\.___.,|     .'
                             onerror="this.style.display='none'; this.parentNode.innerHTML='<div style=\'color: #888; text-align: center; margin-top: 100px;\'><h3>${filename}</h3><p>Content cannot be embedded due to security policy</p><button onclick=\'window.open(\'${miscLinks[filename]}\', \'_blank\')\'  style=\'padding: 10px 20px; margin-top: 20px; background: #238636; color: white; border: none; border-radius: 5px; cursor: pointer;\'>Open in New Tab</button></div>';">
                     </iframe>
                 `;
-                nvimStatus.textContent = `Opened: ${filename} • Use hjkl or arrow keys to navigate • ESC to close nvim`;
+                nvimStatus.textContent = `Opened: ${filename} ΓÇó Use hjkl or arrow keys to navigate ΓÇó ESC to close nvim`;
                 nvimStatus.classList.remove('gains-highlight');
             } else {
                 nvimContent.innerHTML = `
@@ -1493,7 +1802,7 @@ _)      \\.___.,|     .'
                         <p>No preview available</p>
                     </div>
                 `;
-                nvimStatus.textContent = `Selected: ${filename} • Use hjkl or arrow keys to navigate • ESC to close nvim`;
+                nvimStatus.textContent = `Selected: ${filename} ΓÇó Use hjkl or arrow keys to navigate ΓÇó ESC to close nvim`;
                 nvimStatus.classList.remove('gains-highlight');
             }
         }
@@ -1518,7 +1827,7 @@ _)      \\.___.,|     .'
                             <p>Click on files to open them</p>
                         </div>
                     `;
-                    document.getElementById('nvim-status').textContent = 'Use hjkl or arrow keys to navigate • left/right to open/close • ESC to close nvim';
+                    document.getElementById('nvim-status').textContent = 'Use hjkl or arrow keys to navigate ΓÇó left/right to open/close ΓÇó ESC to close nvim';
                     break;
                 case 'l':
                 case 'ArrowRight':
@@ -1573,7 +1882,19 @@ _)      \\.___.,|     .'
             }
             printPrompt();
         });
-        
+
+        // Auto-scroll terminal as user types
+        document.getElementById('terminal-input').addEventListener('input', function() {
+            const terminal = document.getElementById('terminal');
+            terminal.scrollTop = terminal.scrollHeight;
+        });
+
+        // Keep terminal scrolled to bottom on focus
+        document.getElementById('terminal-input').addEventListener('focus', function() {
+            const terminal = document.getElementById('terminal');
+            terminal.scrollTop = terminal.scrollHeight;
+        });
+
         // Prevent nvim keyboard shortcuts from interfering with terminal
         document.addEventListener('keydown', function(e) {
             if (nvimOpen && (e.key === 'h' || e.key === 'j' || e.key === 'k' || e.key === 'l')) {
