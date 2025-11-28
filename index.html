@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.7, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes">
     <title>younes</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>≡ƒñ⌐</text></svg>">
-    <meta name="description" content="younes, security software engineer, enjoyer of computers and science">
+    <meta name="description" content="younes, computers and science enjoyer">
     <style>
         body, html {
             margin: 0;
@@ -537,7 +537,7 @@
     <div class="container">
         <h1 id="name">younes brahimi</h1>
         <p>computer scientist</p>
-        <p id="about">Greetings! I am a security software engineer, infrastructure engineer, site reliability engineer, whatever you want.  Email me if you want to contact me :).</p>
+        <p id="about">Greetings! i'm a security software engineer, infrastructure, site reliability engineer, whatever you need!   :).</p>
         <div id="links">
             <a href="https://github.com/younesbram" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
             <a href="mailto:younes@younes.ca"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 3v18h24v-18h-24zm21.518 2l-9.518 7.713-9.518-7.713h19.036zm-19.518 14v-11.817l10 8.104 10-8.104v11.817h-20z"/></svg></a>
@@ -558,10 +558,10 @@
         <div class="misc-content-frame-header" id="misc-frame-header">
             <span id="misc-filename"></span>
             <span>
-                <button id="terminal-btn" style="display: none;" title="Open in Terminal">≡ƒÆ╗</button>
-                <button id="maximize-btn" title="Maximize">≡ƒùû</button>
-                <button id="open-tab-btn" title="Open in New Tab">≡ƒöù</button>
-                <button id="close-btn" title="Close">Γ£û</button>
+                <button id="terminal-btn" style="display: none;" title="Open Terminal">&#x1F4BB;</button>
+                <button id="maximize-btn" title="Maximize">&#x25A1;</button>
+                <button id="open-tab-btn" title="Open in New Tab">&#x2197;</button>
+                <button id="close-btn" title="Close">&times;</button>
             </span>
         </div>
         <iframe id="misc-frame-iframe"></iframe>
@@ -1436,9 +1436,12 @@ _)      \\.___.,|     .'
 
             frame.style.display = 'block';
 
-            // Show terminal button only if coming from hash (direct link)
+            // Show terminal button only if coming from hash AND terminal is not already open
             const terminalBtn = document.getElementById('terminal-btn');
-            if (fromHash) {
+            const terminal = document.getElementById('terminal');
+            const isTerminalOpen = terminal.style.display === 'block' || terminal.classList.contains('active');
+
+            if (fromHash && !isTerminalOpen) {
                 terminalBtn.style.display = 'inline-block';
                 terminalBtn.onclick = function() {
                     closeMiscContent();
@@ -1467,7 +1470,7 @@ _)      \\.___.,|     .'
                         frame.style.right = 'auto';
                         frame.style.bottom = 'auto';
                     }
-                    document.getElementById('maximize-btn').textContent = '≡ƒùû';
+                    document.getElementById('maximize-btn').innerHTML = '&#x25A1;';
                 } else {
                     // Save current dimensions
                     frame.dataset.prevWidth = frame.style.width || '560px';
@@ -1475,7 +1478,7 @@ _)      \\.___.,|     .'
                     frame.dataset.prevTop = frame.style.top || '20px';
                     frame.dataset.prevLeft = frame.style.left || 'auto';
                     frame.classList.add('maximized');
-                    document.getElementById('maximize-btn').textContent = '≡ƒùù';
+                    document.getElementById('maximize-btn').innerHTML = '&#x25A0;';
                 }
             };
 
