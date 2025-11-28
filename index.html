@@ -193,11 +193,16 @@
             border: none;
             color: #ecf0f1;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 16px;
             padding: 5px 8px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
         }
         .misc-content-frame-header button:hover {
-            background-color: rgba(255,255,255,0.1);
+            background-color: rgba(255,255,255,0.15);
+        }
+        #terminal-btn {
+            margin-right: 5px;
         }
 
         /* Resize handles */
@@ -553,9 +558,10 @@
         <div class="misc-content-frame-header" id="misc-frame-header">
             <span id="misc-filename"></span>
             <span>
-                <button id="maximize-btn">Γî₧Γî¥</button>
-                <button id="open-tab-btn">≡ƒæë</button>
-                <button id="close-btn">Γ¥î</button>
+                <button id="terminal-btn" style="display: none;" title="Open in Terminal">≡ƒÆ╗</button>
+                <button id="maximize-btn" title="Maximize">≡ƒùû</button>
+                <button id="open-tab-btn" title="Open in New Tab">≡ƒöù</button>
+                <button id="close-btn" title="Close">Γ£û</button>
             </span>
         </div>
         <iframe id="misc-frame-iframe"></iframe>
@@ -1430,6 +1436,24 @@ _)      \\.___.,|     .'
 
             frame.style.display = 'block';
 
+            // Show terminal button only if coming from hash (direct link)
+            const terminalBtn = document.getElementById('terminal-btn');
+            if (fromHash) {
+                terminalBtn.style.display = 'inline-block';
+                terminalBtn.onclick = function() {
+                    closeMiscContent();
+                    toggleTerminal();
+                    // Navigate to /misc in terminal
+                    setTimeout(() => {
+                        currentDirectory = '/misc';
+                        printPrompt();
+                        document.getElementById('terminal-input').focus();
+                    }, 100);
+                };
+            } else {
+                terminalBtn.style.display = 'none';
+            }
+
             // Maximize button functionality
             document.getElementById('maximize-btn').onclick = function() {
                 if (frame.classList.contains('maximized')) {
@@ -1443,7 +1467,7 @@ _)      \\.___.,|     .'
                         frame.style.right = 'auto';
                         frame.style.bottom = 'auto';
                     }
-                    document.getElementById('maximize-btn').textContent = 'Γî₧Γî¥';
+                    document.getElementById('maximize-btn').textContent = '≡ƒùû';
                 } else {
                     // Save current dimensions
                     frame.dataset.prevWidth = frame.style.width || '560px';
@@ -1451,7 +1475,7 @@ _)      \\.___.,|     .'
                     frame.dataset.prevTop = frame.style.top || '20px';
                     frame.dataset.prevLeft = frame.style.left || 'auto';
                     frame.classList.add('maximized');
-                    document.getElementById('maximize-btn').textContent = 'ΓîƒΓî₧';
+                    document.getElementById('maximize-btn').textContent = '≡ƒùù';
                 }
             };
 
